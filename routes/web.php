@@ -13,10 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 Auth::routes();
 
+Route::get('/', [App\Http\Controllers\HomeController::class, 'landingpage'])->name('homepage');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/place/edit/{placeId}', [App\Http\Controllers\PlaceController::class, 'edit'])->name('place.edit');
+Route::get('/place/myAds', [App\Http\Controllers\PlaceController::class, 'myAds'])->name('places.myAds');
+Route::resource('/place', 'App\Http\Controllers\PlaceController');
+
+

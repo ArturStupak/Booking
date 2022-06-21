@@ -15,16 +15,8 @@ class Place extends Model
     }
     public function city()
     {
-        return $this->hasOne(Gallery::class, 'id', 'city_id');
+        return $this->hasOne(City::class, 'id', 'city_id');
     }
-    public function atributes()
-    {
-        return $this->hasOne(Atributes::class, 'id', 'places_id');
-    }
-    public function checks()
-    {
-        return $this->hasOne(Check::class, 'id', 'places_id');
 
-    }
 
 }

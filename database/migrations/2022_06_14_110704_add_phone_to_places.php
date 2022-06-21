@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('wishes', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
+        Schema::table('places', function (Blueprint $table) {
+            $table->tinyInteger('phonenumber')->unique();
         });
     }
 
@@ -27,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wishes');
+        Schema::table('places', function (Blueprint $table) {
+            //
+        });
     }
 };

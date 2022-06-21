@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\Place;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function __construct()
-    {
-//        $this->middleware('auth');
-    }
+
 
     /**
      * Show the application dashboard.
@@ -28,6 +28,7 @@ class HomeController extends Controller
 
     public function landingpage()
     {
-        return view('landingpage');
+        $data['places'] = Place::orderBy('views', 'desc')->limit('3')->get();
+        return view('landingpage', $data);
     }
 }

@@ -11308,6 +11308,8 @@ textarea.form-control-lg {
     margin-right: 5%;
 }
 
+
+
 /* Navbar section */
 
 .nav{
@@ -11503,10 +11505,21 @@ textarea.form-control-lg {
     .nav div.media_button{
         display: block;
     }
+
 }
 .section {
     position: relative;
     height: 100vh;
+}
+.section.edit {
+    height: auto;
+
+}
+.wrapper-about{
+    background-image: url(/images/background.jpg?df3c8231ed7ebf8371ba63f406692a9e);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: center;
 }
 
 .section .section-center {
@@ -11653,13 +11666,14 @@ textarea.form-control-lg {
 /* Slideshow container */
 .slideshow-container {
     max-width: 1000px;
-    position: relative;
+    position: center;
     margin: auto;
 }
 
 /* Hide the images by default */
 .mySlides {
     display: none;
+
 }
 
 /* Next & previous buttons */
@@ -11746,11 +11760,14 @@ textarea.form-control-lg {
     to {opacity: 1}
 }
 .card{
-    width: 40%;
+    width: 50%;
     margin-left: 30%;
+    padding:10px;
 }
 .card.edit{
-    width: 90%;
+    width: 30%;
+    margin-left:0%;
+    margin-top:1%;
 
 
 }
@@ -11759,6 +11776,7 @@ textarea.form-control-lg {
 }
 .card.ads_card{
     margin-left: 5%;
+    margin-top:3%;
 
 }
 .ads_container{
@@ -11778,8 +11796,12 @@ textarea.form-control-lg {
 .slide_photo{
     /*padding-left: 10%;*/
 
-    width: 40%;
+    /*width: 40%;*/
     padding-top: 3%;
+    display:flex;
+    position: absolute;
+    left: 30%;
+    top: 5%;
 
 }
 body {
@@ -11799,11 +11821,23 @@ img {
 .container {
     position: relative;
 }
+.container.about{
+    width: 70%;
+    margin-right:auto;
+    margin-left: auto;
+
+
+
+}
 
 /* Hide the images by default */
 .mySlides {
     display: none;
+
+
+
 }
+
 
 /* Add a pointer when hovering over the thumbnail images */
 .cursor {
@@ -11831,7 +11865,7 @@ img {
 
 /* Position the "next button" to the right */
 .next {
-    right: 1%;
+
     border-radius: 3px 0 0 3px;
 }
 
@@ -11860,7 +11894,10 @@ img {
     display: table;
     clear: both;
 }
-
+.row{
+    margin-left: -15px;
+    margin-right: -15px;
+}
 /* Six columns side by side */
 .column {
     float: left;
@@ -11879,6 +11916,55 @@ img {
 .info{
     margin-top: 3%
 }
+.wrapper-info{
+    background-color: white;
+    width: 50%;
+    margin-right: 5%;
+    border : 15px solid green;
 
+}
+.clearfix p{
+    font-size: 36px;
+    margin: 0;
+    text-align: center;
+    color:red;
+}
+.info p{
+    font-size: 20px;
+    margin-left: 10px;
+}
+.offer{
+    background: white;
+}
+.row{
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.offer-container{
+    width:100%;
+    font-family: 'Helvetica', sans-serif;
+    border: 1px solid #e5e5e5;
+    position: relative;
+    padding:10px;
+}
+.notification {
+
+    color: black;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+
+.notification .badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+}
 
 

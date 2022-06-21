@@ -2,7 +2,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div id="booking" class="section">
         <div class="center">
             <div class="row justify-content-center">
@@ -22,6 +21,12 @@
                                     <label for="adress" class="col-md-4 col-form-label text-md-end">{{ __('Adresas') }}</label>
                                     <div class="col-md-6">
                                         <input type="text" name="adress" class="form-control" placeholder="Adresas">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="phonenumber" class="col-md-4 col-form-label text-md-end">{{ __('Tel. numeris') }}</label>
+                                    <div class="col-md-6">
+                                        <input type="number" name="phonenumber" class="form-control" placeholder="Tel. numeris">
                                     </div>
                                 </div>
                                 <div class="row mb-3">

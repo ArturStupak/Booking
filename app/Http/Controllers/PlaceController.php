@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Atributes;
+use App\Models\Booking;
 use App\Models\Check;
 use App\Models\City;
 use App\Models\Gallery;
@@ -14,6 +15,12 @@ use Nette\Utils\Image;
 
 class PlaceController extends Controller
 {
+
+    public function __construct()
+    {
+//        $this->middleware('auth');
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -54,6 +61,7 @@ class PlaceController extends Controller
         $place->max_number_of_people = $request->post('max_number_of_people');
         $place->description = $request->post('description');
         $place->views = 0;
+        $place->phonenumber = $request->post('phonenumber');
         $place->save();
 
         $last = DB::table('places')->latest('id')->first();
@@ -69,10 +77,9 @@ class PlaceController extends Controller
         }
 
 
-
         $images = $request->file('image');
         $position = 0;
-        foreach ($images as $image){
+        foreach ($images as $image) {
 //            $validatedData = $request->validate([
 //                'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
 //            ]);
@@ -80,8 +87,8 @@ class PlaceController extends Controller
             $path = $image->move('/public/uploads/', $name);
             $save = new Gallery();
             $save->place_id = $last->id;
-            $save->image = str_replace( '\\', '/', $path );
-            $position ++;
+            $save->image = str_replace('\\', '/', $path);
+            $position++;
             $save->position = $position;
             $save->save();
 
@@ -105,9 +112,28 @@ class PlaceController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Place $place)
     {
-        //
+        $id = $place->id;
+        $data['places'] = Place::find($id);
+        $place['views'] += 1;
+        $place->save();
+        $data['images'] = Gallery::where('place_id', $id)->get();
+        $data['checks'] = Check::where('places_id', $id)->get();
+        $dates = Booking::where('place_id', $id)->get();
+        $allDates = [];
+        foreach($dates as $date){
+
+            $arrival = strtotime($date->arrival);
+            $departure = strtotime($date->departure);
+            for($currentDate = $arrival; $currentDate <= $departure; $currentDate += (86400)){
+
+                $daterange = date('Y-m-d', $currentDate);
+                $allDates[] = $daterange;
+            }
+        }
+        $data['dates'] = json_encode($allDates);
+        return view('place.about', $data);
     }
 
     /**
@@ -120,6 +146,7 @@ class PlaceController extends Controller
     {
         $data['places'] = Place::find($placeId);
         $data['images'] = Gallery::where('place_id', $placeId)->get();
+        $data['count'] = Gallery::where('place_id', $placeId)->count();
         $data['cities'] = City::all();
         $checks = Check::where('places_id', $placeId)->get();
         $data['atributes'] = Atributes::all();
@@ -149,11 +176,11 @@ class PlaceController extends Controller
         $place->max_number_of_people = $request->post('max_number_of_people');
         $place->description = $request->post('description');
         $place->views += 0;
+        $place->phonenumber = $request->post('phonenumber');
         $place->save();
         $checks = $request->post('atributes');
         DB::table('checks')->where('places_id', $place->id)->delete();
         foreach ($checks as $element) {
-
             $check = new Check();
             $check->places_id = $place->id;
             $check->atributes_id = $element;
@@ -161,17 +188,26 @@ class PlaceController extends Controller
             $check->save();
         }
 
-        $images = $request->post('images');
-        DB::table('galleries')->where('place_id', $place->id)->delete();
-        $position = 0;
-        foreach ($images as $image) {
-            $gallery = new Gallery();
-            $gallery->place_id = $place->id;
-            $gallery->image = $image;
-            $position++;
-            $gallery->position = $position;
-            $gallery->save();
+        $images = $request->file('image');
+        if ($images !== null) {
+
+            $position = 0;
+            foreach ($images as $image) {
+//            $validatedData = $request->validate([
+//                'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+//            ]);
+                $name = $image->getClientOriginalName();
+                $path = $image->move('/public/uploads/', $name);
+                $save = new Gallery();
+                $save->place_id = $place->id;
+                $save->image = str_replace('\\', '/', $path);
+                $position++;
+                $save->position = $position;
+                $save->save();
+            }
+
         }
+
         return back();
     }
 
@@ -179,11 +215,11 @@ class PlaceController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+     //
     }
 
     public function myAds()
@@ -193,16 +229,40 @@ class PlaceController extends Controller
         return view('place.myAds', $data);
     }
 
-    public function about($placeId)
+
+    public function deleteImage(Request $request)
     {
 
-//        $data['places'] = Place::where('id', $placeId)->get();
-//        $data['images'] = Gallery::where('place_id', $placeId)->get();
-//        return view('place.about', $data);
-
-
+        Gallery::where('id', $request->post('image_id'))->delete();
+        return back();
     }
 
+    public function deletePlace($placeId)
+    {
+        Place::where('id', $placeId)->delete();
+        return back();
+    }
+
+
+
+//    public function PopularPlaces(){
+//        $data['places'] = Place::orderBy('views', 'desc')->get();
+//        return view('landingpage', $data);
+//    }
+
+    public function search(Request $request){
+        // Get the search value from the request
+        $search = $request->input('search');
+
+        // Search in the title and body columns from the posts table
+        $places = Place::query()
+            ->where('name', 'LIKE', "%{$search}%")
+            ->orWhere('description', 'LIKE', "%{$search}%")
+            ->get();
+
+        // Return the search view with the resluts compacted
+        return view('search', compact('places'));
+    }
 
 
 

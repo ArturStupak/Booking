@@ -33,5 +33,15 @@ Route::post('/booking/', [App\Http\Controllers\BookingController::class, 'store'
 Route::get('/bookings', [App\Http\Controllers\BookingController::class, 'seen'])->name('booking.seen');
 Route::get('/booking/accept/{bookingId}', [App\Http\Controllers\BookingController::class, 'accept'])->name('booking.accept');
 Route::get('/delete/{id}', [App\Http\Controllers\BookingController::class, 'deleteBooking'])->name('booking.deleteBooking');
+Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'users'])->name('admin.users');
+Route::get('/admin/show/{userId}', [App\Http\Controllers\AdminController::class, 'show'])->name('admin.show');
+Route::get('/admin/userUpdate/{userId}', [App\Http\Controllers\AdminController::class, 'show'])->name('admin.show');
+Route::Post('/admin/update', [App\Http\Controllers\AdminController::class, 'update'])->name('admin.update');
+Route::get('/admin/userPlaces/{userId}', [App\Http\Controllers\AdminController::class, 'userPlaces'])->name('admin.userPlaces');
+Route::get('/access', [App\Http\Controllers\HomeController::class, 'access'])->name('access');
+
+
+
+
 
 

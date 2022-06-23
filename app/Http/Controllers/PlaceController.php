@@ -264,6 +264,10 @@ class PlaceController extends Controller
         return view('search', compact('places'));
     }
 
+    public function filter()
+    {
+
+    }
 
 
 }

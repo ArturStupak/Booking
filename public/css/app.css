@@ -11660,6 +11660,12 @@ textarea.form-control-lg {
  }
 .form-control{
     width: 100%;
+    margin: 3px;
+    padding-right: 0 !important;
+
+    padding-top: 0 !important;
+
+
 }
 * {box-sizing:border-box}
 

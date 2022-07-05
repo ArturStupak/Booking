@@ -12,4 +12,8 @@ class Check extends Model
     {
         return $this->hasOne(Atributes::class, 'id', 'atributes_id');
     }
+    public function checks()
+    {
+        return $this->hasOne(Place::class, 'id', 'places_id');
+    }
 }

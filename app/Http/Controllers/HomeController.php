@@ -23,22 +23,24 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        $peoples = Place::all();
+        $max_peoples = [];
+        foreach ($peoples as $people){
+            $max_peoples[] = $people->max_number_of_people;
+        }
+        $data['maxPeoples'] = $max_peoples;
+        $data['atributes'] = Atributes::all();
+        $data['places'] = Place::paginate(3);
+        $data['cities'] = City::all();
+        return view('home', $data);
     }
 
     public function landingpage()
     {
         $data['places'] = Place::orderBy('views', 'desc')->limit('3')->get();
         $data['cities'] = City::all();
-        $max_peoples = [];
-        $peoples = Place::all();
-        foreach ($peoples as $people){
-            $max_peoples[] = $people->max_number_of_people;
-        }
-        $data['maxPeoples'] = $max_peoples;
-        $data['atributes'] = Atributes::all();
         return view('landingpage', $data);
     }
 

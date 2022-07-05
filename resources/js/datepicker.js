@@ -1,6 +1,7 @@
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 import 'jquery-ui/ui/widgets/datepicker.js';
+
 var dates = [];
 $(function () {
     var arrival = $('#rezervdate').val();
@@ -35,6 +36,7 @@ $(document).ready(function() {
         dateFormat: 'yy-mm-dd',
         minDate: 0
     })
+
 
     $( "#departure" ).datepicker({
         dateFormat: 'yy-mm-dd',

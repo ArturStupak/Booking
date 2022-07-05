@@ -20,11 +20,9 @@ class BookingController extends Controller
         $dates = Booking::where('place_id', $placesId)->get();
         $allDates = [];
         foreach($dates as $date){
-
             $arrival = strtotime($date->arrival);
             $departure = strtotime($date->departure);
             for($currentDate = $arrival; $currentDate <= $departure; $currentDate += (86400)){
-
                 $daterange = date('Y-m-d', $currentDate);
                 $allDates[] = $daterange;
             }
@@ -36,7 +34,6 @@ class BookingController extends Controller
     public function store(Request $request){
 
         $max = Place::find($request->post('place_id'));
-
         $booking = new Booking();
         $booking->name = $request->post('name');
         $booking->email = $request->post('email');
@@ -52,9 +49,7 @@ class BookingController extends Controller
             return back();
         }
 
-
         $last = DB::table('bookings')->latest('id')->first();
-
         $atributes=$request->post('atributes');
         foreach($atributes as $atribute)
         {
@@ -64,7 +59,7 @@ class BookingController extends Controller
             $wishes->save();
         }
 
-    return redirect(route('homepage'));
+    return redirect(route('home'));
     }
 
     public function seen()
@@ -75,31 +70,24 @@ class BookingController extends Controller
         foreach($places as $place){
             $userId[]= $place->id;
         }
-
         $data['bookings'] = [];
         foreach ($userId as $user) {
             $data['bookings'][] = Booking::where('place_id', $user)->where('seen', 1)->get();
         }
-
-
-
         return view('bookings.bookings',$data);
     }
 
     public function accept($bookingId){
 
-
         $bookingId = Booking::find($bookingId);
         $bookingId->seen = 0;
         $bookingId->save();
-
         return back();
 
     }
 
     public function deleteBooking($id)
     {
-
         Booking::where('id', $id)->delete();
         return back();
     }

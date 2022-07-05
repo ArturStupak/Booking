@@ -31,16 +31,13 @@ class AdminController extends Controller
         $user->email = $request->post('email');
         $user->role = $request->post('role');
         $user->active = $request->post('active');
-
         $user->save();
-
         return back();
     }
 
     public function userPlaces($userId)
     {
         $data['places'] = Place::where('user_id', $userId)->get();
-
         return view('admin.userPlaces', $data);
     }
 
